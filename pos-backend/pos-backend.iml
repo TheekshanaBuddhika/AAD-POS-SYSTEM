@@ -30,8 +30,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.mysql:mysql-connector-j:8.0.33" level="project" />
-    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.21.9" level="project" />
+    <orderEntry type="library" name="Maven: com.mysql:mysql-connector-j:8.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.25.1" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse:yasson:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: jakarta.json.bind:jakarta.json.bind-api:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: jakarta.json:jakarta.json-api:2.1.0" level="project" />
