@@ -1,6 +1,7 @@
 package lk.ijse.gdse66.pos_backend.bo;
 
 import lk.ijse.gdse66.pos_backend.bo.custom.impl.CustomerBOImpl;
+import lk.ijse.gdse66.pos_backend.bo.custom.impl.ItemBOImpl;
 
 public class BoFactory {
     private static BoFactory boFactory;
