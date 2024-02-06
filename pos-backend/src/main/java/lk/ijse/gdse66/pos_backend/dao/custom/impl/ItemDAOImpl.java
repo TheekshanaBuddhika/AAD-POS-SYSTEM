@@ -20,17 +20,17 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public boolean save(Item dto) throws SQLException, ClassNotFoundException {
+    public boolean save(Item entity) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)", entity.getCode(), entity.getDescription(), entity.getUnitPrice(), entity.getQtyOnHand());
+    }
+
+    @Override
+    public boolean update(Item entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(Item dto) throws SQLException, ClassNotFoundException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(String s) throws SQLException, ClassNotFoundException {
+    public boolean delete(String code) throws SQLException, ClassNotFoundException {
         return false;
     }
 }
