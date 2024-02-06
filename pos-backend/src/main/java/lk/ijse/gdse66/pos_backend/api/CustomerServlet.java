@@ -79,4 +79,31 @@ public class CustomerServlet extends HttpServlet {
         }
 
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        Jsonb jsonb = JsonbBuilder.create();
+        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+        String id = customerDTO.getId();
+        String name = customerDTO.getName();
+        String address = customerDTO.getAddress();
+        double salary = customerDTO.getSalary();
+
+        try {
+
+            boolean updateCustomer = customerBO.updateCustomer(new CustomerDTO(id, name, address, salary));
+            if (updateCustomer) {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                resp.getWriter().write("Updated customer successfully");
+            }else {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update the customer");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
