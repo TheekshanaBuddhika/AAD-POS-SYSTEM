@@ -19,14 +19,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet(name = "Customer", urlPatterns = "/customer", loadOnStartup = 0)
+@WebServlet(name = "Customer", urlPatterns = "/customers", loadOnStartup = 0)
 public class CustomerServlet extends HttpServlet {
 
     CustomerBO customerBO= BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         try {
             ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers();
             resp.setContentType("application/json");
@@ -34,6 +33,49 @@ public class CustomerServlet extends HttpServlet {
             jsonb.toJson(allCustomers,resp.getWriter());
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        Jsonb jsonb = JsonbBuilder.create();
+        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+        String id = customerDTO.getId();
+        String name = customerDTO.getName();
+        String address = customerDTO.getAddress();
+        double salary = customerDTO.getSalary();
+
+
+        if(id==null || !id.matches("C\\d{3}")){
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID is empty or invalid");
+            return;
+        } else if (name == null || !name.matches("[A-Za-z ]+")) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Name is empty or invalid");
+            return;
+        } else if (address == null || address.length() < 3) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Address is empty or invalid");
+            return;
+        }else if (salary < 0.0 ){
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Salary is empty or invalid");
+            return;
+        }
+
+        try {
+
+            boolean saveCustomer = customerBO.saveCustomer(new CustomerDTO(id, name, address, salary));
+            if (saveCustomer) {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                resp.getWriter().write("Added customer successfully");
+            }else {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to save the customer");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }

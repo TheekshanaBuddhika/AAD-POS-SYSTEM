@@ -8,4 +8,6 @@ import java.util.ArrayList;
 
 public interface CustomerBO {
     ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException;
+
+    boolean saveCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException;
 }
