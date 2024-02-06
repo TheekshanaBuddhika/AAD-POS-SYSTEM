@@ -3,8 +3,8 @@ package lk.ijse.gdse66.pos_backend.dto;
 public class ItemDTO {
     private String code;
     private String description;
-    private int qtyOnHand;
     private double unitPrice;
+    private int qtyOnHand;
 
     @Override
     public String toString() {
@@ -51,7 +51,7 @@ public class ItemDTO {
     public ItemDTO() {
     }
 
-    public ItemDTO(String code, String description, int qtyOnHand, double unitPrice) {
+    public ItemDTO(String code, String description, double unitPrice, int qtyOnHand) {
         this.code = code;
         this.description = description;
         this.qtyOnHand = qtyOnHand;

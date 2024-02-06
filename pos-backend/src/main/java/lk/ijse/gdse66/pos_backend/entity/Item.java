@@ -3,8 +3,9 @@ package lk.ijse.gdse66.pos_backend.entity;
 public class Item {
     private String code;
     private String description;
-    private int qtyOnHand;
     private double unitPrice;
+    private int qtyOnHand;
+
 
     public String getCode() {
         return code;
@@ -38,11 +39,11 @@ public class Item {
         this.unitPrice = unitPrice;
     }
 
-    public Item(String code, String description, int qtyOnHand, double unitPrice) {
+    public Item(String code, String description, double unitPrice, int qtyOnHand) {
         this.code = code;
         this.description = description;
-        this.qtyOnHand = qtyOnHand;
         this.unitPrice = unitPrice;
+        this.qtyOnHand = qtyOnHand;
     }
 
     public Item() {
