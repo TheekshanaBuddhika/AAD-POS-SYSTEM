@@ -30,4 +30,9 @@ public class CustomerDAOImpl implements CustomerDAO {
         return SQLUtil.execute("UPDATE customer SET name=?, address=?, salary=? WHERE id=?", entity.getName(), entity.getAddress(), entity.getSalary(),entity.getId());
     }
 
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("DELETE FROM customer WHERE id=?", id);
+    }
+
 }
