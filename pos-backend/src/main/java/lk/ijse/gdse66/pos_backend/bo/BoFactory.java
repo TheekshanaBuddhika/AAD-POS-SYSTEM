@@ -21,9 +21,9 @@ public class BoFactory {
         switch (boTypes) {
             case CUSTOMER_BO:
                 return (T) new CustomerBOImpl();
-           /* case ITEM_BO:
+            case ITEM_BO:
                 return (T) new ItemBOImpl();
-            case PURCHASE_ORDER_BO:
+          /*  case PURCHASE_ORDER_BO:
                 return (T) new PurchaseOrderBOImpl();*/
             default:
                 return null;
