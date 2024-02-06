@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse66.pos_backend.bo.BOFactory;
 import lk.ijse.gdse66.pos_backend.bo.custom.CustomerBO;
-import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 @WebServlet(name = "Customer", urlPatterns = "/customers", loadOnStartup = 1)
 public class CustomerServlet extends HttpServlet {
 
-    CustomerBO customerBO= BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER_BO);
+   // CustomerBO customerBO= BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
 
 
     @Override
@@ -29,10 +28,8 @@ public class CustomerServlet extends HttpServlet {
             resp.setContentType("application/json");
             Jsonb jsonb = JsonbBuilder.create();
             jsonb.toJson(allCustomers,resp.getWriter());
-        } catch (SQLException throwables) {
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
     }
