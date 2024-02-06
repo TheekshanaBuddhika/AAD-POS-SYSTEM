@@ -7,7 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lk.ijse.gdse66.pos_backend.bo.BOFactory;
+import lk.ijse.gdse66.pos_backend.bo.BoFactory;
+import lk.ijse.gdse66.pos_backend.bo.custom.CustomerBO;
+import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 @WebServlet(name = "Customer", urlPatterns = "/customers", loadOnStartup = 1)
 public class CustomerServlet extends HttpServlet {
 
-   // CustomerBO customerBO= BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
+    CustomerBO customerBO= BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
 
 
     @Override
