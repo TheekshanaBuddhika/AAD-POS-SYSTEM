@@ -24,7 +24,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            ArrayList<ItemDTO> allitems = itemBO.getAllCustomers();
+            ArrayList<ItemDTO> allitems = itemBO.getAllItems();
             resp.setContentType("application/json");
             Jsonb jsonb = JsonbBuilder.create();
             jsonb.toJson(allitems,resp.getWriter());
