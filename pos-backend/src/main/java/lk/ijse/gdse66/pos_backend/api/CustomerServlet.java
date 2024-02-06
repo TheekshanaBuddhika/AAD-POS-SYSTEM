@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse66.pos_backend.bo.BOFactory;
-import lk.ijse.gdse66.pos_backend.bo.custom.CustomerBO;
 
 import java.io.IOException;
 import java.sql.SQLException;
