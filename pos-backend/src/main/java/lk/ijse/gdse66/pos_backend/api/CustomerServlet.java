@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name = "Customer", urlPatterns = "/customers", loadOnStartup = 1)
 public class CustomerServlet extends HttpServlet {
@@ -14,6 +15,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers();
 
     }
 }

@@ -1,8 +1,7 @@
 package lk.ijse.gdse66.pos_backend.dao.custom.impl;
 
-import lk.ijse.pos.dao.custom.OrderDetailsDAO;
-import lk.ijse.pos.dao.custom.impl.util.SQLUtil;
-import lk.ijse.pos.entity.OrderDetails;
+import lk.ijse.gdse66.pos_backend.dao.custom.OrderDetailsDAO;
+import lk.ijse.gdse66.pos_backend.entity.OrderDetails;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
