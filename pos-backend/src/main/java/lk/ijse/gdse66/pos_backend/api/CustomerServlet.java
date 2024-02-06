@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet(name = "Customer", urlPatterns = "/customers", loadOnStartup = 1)
+@WebServlet(name = "Customer", urlPatterns = "/customer", loadOnStartup = 0)
 public class CustomerServlet extends HttpServlet {
 
     CustomerBO customerBO= BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
