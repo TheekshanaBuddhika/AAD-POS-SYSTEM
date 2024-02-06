@@ -1,6 +1,7 @@
 package lk.ijse.gdse66.pos_backend.bo.custom.impl;
 
 import lk.ijse.gdse66.pos_backend.bo.custom.CustomerBO;
+import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
