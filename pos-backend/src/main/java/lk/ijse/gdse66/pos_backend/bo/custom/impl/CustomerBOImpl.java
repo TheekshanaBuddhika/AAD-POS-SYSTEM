@@ -1,10 +1,11 @@
 package lk.ijse.gdse66.pos_backend.bo.custom.impl;
 
-import lk.ijse.pos.bo.custom.CustomerBO;
-import lk.ijse.pos.dao.DAOFactory;
-import lk.ijse.pos.dao.custom.CustomerDAO;
-import lk.ijse.pos.dto.CustomerDTO;
-import lk.ijse.pos.entity.Customer;
+import lk.ijse.gdse66.pos_backend.bo.custom.CustomerBO;
+import lk.ijse.gdse66.pos_backend.dao.DAOFactory;
+import lk.ijse.gdse66.pos_backend.dao.custom.CustomerDAO;
+import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
+import lk.ijse.gdse66.pos_backend.entity.Customer;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
