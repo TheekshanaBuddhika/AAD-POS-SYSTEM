@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse66.pos_backend.bo.BoFactory;
 import lk.ijse.gdse66.pos_backend.bo.custom.PurchaseOrderBO;
-import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 import lk.ijse.gdse66.pos_backend.dto.OrderDTO;
 import lk.ijse.gdse66.pos_backend.dto.OrderDetailDTO;
 
@@ -17,7 +16,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
