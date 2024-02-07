@@ -7,6 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.ijse.gdse66.pos_backend.bo.BoFactory;
+import lk.ijse.gdse66.pos_backend.bo.custom.OrderDetailBO;
+import lk.ijse.gdse66.pos_backend.bo.custom.impl.OrderDetailBOImpl;
 import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 import lk.ijse.gdse66.pos_backend.dto.OrderDetailDTO;
 
@@ -20,6 +23,8 @@ import java.util.ArrayList;
 
 @WebServlet(urlPatterns = "/detail")
 public class OrederDetailServlet extends HttpServlet {
+
+    OrderDetailBO detailBO = BoFactory.getBoFactory().getBO(BoFactory.BOTypes.Detail_BO);
 
     private DataSource source;
 
@@ -36,11 +41,11 @@ public class OrederDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Connection connection = source.getConnection();
-            ArrayList<OrderDetailDTO> alldetails = customerBO.getAllDetails(connection);
+            ArrayList<OrderDetailDTO> alldetails = detailBO.getAllDetails(connection);
             resp.setContentType("application/json");
             Jsonb jsonb = JsonbBuilder.create();
             jsonb.toJson(alldetails,resp.getWriter());
-        } catch (SQLException | ClassNotFoundException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
