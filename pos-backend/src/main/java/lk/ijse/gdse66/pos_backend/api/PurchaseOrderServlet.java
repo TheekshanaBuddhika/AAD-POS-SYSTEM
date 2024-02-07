@@ -65,7 +65,7 @@ public class PurchaseOrderServlet extends HttpServlet {
 
         try {
 
-            boolean saveOrder = poBO.saveOrder(new OrderDTO(id, date, customerId, detaisList),source.getConnection());
+            boolean saveOrder = poBO.saveOrder(new OrderDTO(id, date, customerId, detaisList),source);
             if (saveOrder) {
                 resp.setStatus(HttpServletResponse.SC_CREATED);
                 resp.getWriter().write("Added order successfully");
