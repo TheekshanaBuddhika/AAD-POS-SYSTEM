@@ -50,30 +50,30 @@ home.addEventListener("click",function(){
   oddsec.style.display = 'none';
 });
 
-let customer={
-id:"",
-name:"",
-address:"",
-tp:""
-}
+// let customer={
+// id:"",
+// name:"",
+// address:"",
+// tp:""
+// }
 
-let item={
-code:"",
-description:"",
-qtyOnHand:0,
-unitPrice:0
-}
+// let item={
+// code:"",
+// description:"",
+// qtyOnHand:0,
+// unitPrice:0
+// }
 
-let order = {
-oid:"",
-date:"",
-customerID:"",
-orderDetails:[]
-}
+// let order = {
+// oid:"",
+// date:"",
+// customerID:"",
+// orderDetails:[]
+// }
 
-let orderDetail = {
-oid: "",
-date: "",
-customerID: "",
-orderDetails: [/*{oid: this.oid, code: "", qty: 0, unitPrice: 0}*/]
-}
+// let orderDetail = {
+// oid: "",
+// date: "",
+// customerID: "",
+// orderDetails: [/*{oid: this.oid, code: "", qty: 0, unitPrice: 0}*/]
+//}

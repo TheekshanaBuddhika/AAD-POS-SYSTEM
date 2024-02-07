@@ -39,8 +39,8 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Connection connection = source.getConnection();
+        try (Connection connection = source.getConnection();){
+
             ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomers(connection);
             resp.setContentType("application/json");
             Jsonb jsonb = JsonbBuilder.create();
@@ -53,16 +53,16 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+        System.out.println(customerDTO.toString());
         String id = customerDTO.getId();
         String name = customerDTO.getName();
         String address = customerDTO.getAddress();
         double salary = customerDTO.getSalary();
 
 
-        if(id==null || !id.matches("C\\d{3}")){
+        if(id==null || !id.matches("/^(C0-)[0-9]{3}$/")){
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID is empty or invalid");
             return;
         } else if (name == null || !name.matches("[A-Za-z ]+")) {
@@ -76,9 +76,8 @@ public class CustomerServlet extends HttpServlet {
             return;
         }
 
-        try {
+        try ( Connection connection = source.getConnection();){
 
-            Connection connection = source.getConnection();
             boolean saveCustomer = customerBO.saveCustomer(new CustomerDTO(id, name, address, salary),connection);
             if (saveCustomer) {
                 resp.setStatus(HttpServletResponse.SC_CREATED);
@@ -105,10 +104,7 @@ public class CustomerServlet extends HttpServlet {
         String address = customerDTO.getAddress();
         double salary = customerDTO.getSalary();
 
-        try {
-
-            Connection connection = source.getConnection();
-
+        try ( Connection connection = source.getConnection();){
             boolean updateCustomer = customerBO.updateCustomer(new CustomerDTO(id, name, address, salary),connection);
             if (updateCustomer) {
                 resp.setStatus(HttpServletResponse.SC_CREATED);
@@ -128,8 +124,8 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
-        try {
-            Connection connection = source.getConnection();
+        try (Connection connection = source.getConnection();){
+
             boolean deleteCustomer = customerBO.deleteCustomer(id,connection);
             if(deleteCustomer){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);

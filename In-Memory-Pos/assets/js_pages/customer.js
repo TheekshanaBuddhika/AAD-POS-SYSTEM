@@ -1,17 +1,30 @@
 let tableBody = $("#body");
 
-//save the customer information
+
 $(`#save-customer`).click(function () {
+        let idval = $("#customer-gmail").val();
+        isIdExists(idval, function (exists) {
+            if (!exists) {
+               // Continue with your existing code for saving the customer
+              saveCustomermain();
+            } else {
+                clearCustomerInputFields();
+                alert("ID already exists. Please choose a different ID.");
+            }
+        });
+});
 
-    let id = $('#txt-id').val();
-    let name = $('#txt-name').val();
-    let address = $('#txt-address').val();
-
+function saveCustomermain(){
+    let id = $("#customer-gmail").val();
+    let address = $("#customer-address").val();
+    let name = $("#customer-name").val();
+    let salary = $("#customer-tp").val();
 
     const customerObj = {
         id:id,
         name:name,
-        address:address
+        address:address,
+        salary:salary
     };
 
     const jsonObj = JSON.stringify(customerObj);
@@ -25,8 +38,7 @@ $(`#save-customer`).click(function () {
             console.log("success: ", resp);
             console.log("success: ", textStatus);
             console.log("success: ", jqxhr);
-            /*if(jqxhr.status == 201)
-                alert("Added customer successfully")*/
+         
             if (jqxhr.status == 201)
                 alert(jqxhr.responseText);
         },
@@ -36,34 +48,32 @@ $(`#save-customer`).click(function () {
             console.log("error: ", error);
         }
     })
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    let idVal = $("#customer-gmail").val();
-    if (searchCustomer(idVal.trim()) === undefined) {
-        let id = $("#customer-gmail");
-        let address = $("#customer-address");
-        let name = $("#customer-name");
-        let tp = $("#customer-tp");
-
-        customer = {
-            name: name.val(),
-            id: id.val(),
-            address: address.val(),
-            tp: tp.val()
-        }
-        customerDB.push(customer);
-    }else {
-        alert("already exit item iD");
-    }
     getAll();
     clearCustomerInputFields();
-});
+}
 
-
-
-function searchCustomer(id) {
-    return customerDB.find(function (customer) {
-        return customer.id == id;
+function isIdExists(id, callback) {
+    $.ajax({
+        url: "http://localhost:8080/app/customers",
+        method: "GET",
+        success: function (resp) {
+            // ID exists
+            console.log("Success: ", resp);
+                for (const customer of resp) {
+                    if(customer.id == id) {
+                        callback(true);
+                    }
+                }
+            
+        },
+        error: function (jqxhr, textStatus, error) {
+            // ID does not exist
+            if (jqxhr.status == 404) {
+                callback(false);
+            } else {
+                console.log("Error checking ID existence: ", jqxhr, textStatus, error);
+            }
+        }
     });
 }
 
