@@ -1,3 +1,5 @@
+// Customer Validation
+
 const CUS_ID_REGEX = /^(C0)[0-9]{3}$/;
 const CUS_NAME_REGEX = /^[A-Za-z ]{5,}$/;
 const CUS_ADDRESS_REGEX = /^[A-Za-z0-9 ]{5,}$/;
@@ -147,3 +149,7 @@ function setBtn() {
     });
 
 }
+
+
+//Items Validation
+
