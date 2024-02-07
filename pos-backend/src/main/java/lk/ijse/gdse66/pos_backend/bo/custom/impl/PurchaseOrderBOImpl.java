@@ -1,18 +1,31 @@
 package lk.ijse.gdse66.pos_backend.bo.custom.impl;
 
 import lk.ijse.gdse66.pos_backend.bo.custom.PurchaseOrderBO;
+import lk.ijse.gdse66.pos_backend.dao.DAOFactory;
+import lk.ijse.gdse66.pos_backend.dao.custom.ItemDAO;
+import lk.ijse.gdse66.pos_backend.dao.custom.OrderDAO;
+import lk.ijse.gdse66.pos_backend.dao.custom.OrderDetailsDAO;
+import lk.ijse.gdse66.pos_backend.dto.ItemDTO;
 import lk.ijse.gdse66.pos_backend.dto.OrderDTO;
+import lk.ijse.gdse66.pos_backend.dto.OrderDetailDTO;
+import lk.ijse.gdse66.pos_backend.entity.Item;
+import lk.ijse.gdse66.pos_backend.entity.OrderDetails;
+import lk.ijse.gdse66.pos_backend.entity.Orders;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class PurchaseOrderBOImpl implements PurchaseOrderBO {
+
+    ItemDAO itemDAO = DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.ITEM);
+    OrderDAO orderDAO = DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.ORDER);
+    OrderDetailsDAO orderDetailsDAO = DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.ORDER_DETAILS);
+
     @Override
     public boolean saveOrder(OrderDTO dto, Connection connection) throws SQLException, ClassNotFoundException {
-        Connection connection = null;
+
         try {
-            connection = DBConnection.getDbConnection().getConnection();
-            /*if order id already exist*/
+
             if (orderDAO.exist(dto.getOrderId())) {
                 return false;
             }
