@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @WebServlet(urlPatterns = "/items")
 public class ItemServlet extends HttpServlet {
 
-    ItemBO itemBO=  BoFactory.getBoFactory().getBO(BoFactory.BOTypes.ITEM_BO);
+    ItemBO itemBO =  BoFactory.getBoFactory().getBO(BoFactory.BOTypes.ITEM_BO);
 
     private DataSource source;
 
