@@ -23,7 +23,7 @@ public class QueryDAOImpl implements QueryDAO {
             String customerID = rst.getString(3);
             String itemCode = rst.getString(5);
             int itemQty = rst.getInt(6);
-            BigDecimal unitPrice = rst.getBigDecimal(7);
+            double unitPrice = rst.getDouble(7);
             OrderJoinEntity joinEntity = new OrderJoinEntity(orderID, orderDate, customerID, itemCode, itemQty, unitPrice);
             allRecords.add(joinEntity);
         }
