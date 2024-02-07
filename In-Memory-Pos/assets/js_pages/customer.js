@@ -224,6 +224,7 @@ function deleteFunc(id){
     })
 }       
 
+//search for customers
 $('#txtSearch').on('keyup',function (){
 
     let txtVal = $('#txtSearch').val();
