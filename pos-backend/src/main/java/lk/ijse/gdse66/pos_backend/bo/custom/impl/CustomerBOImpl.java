@@ -25,17 +25,17 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public boolean saveCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException {
-        return customerDAO.save( new Customer(dto.getId(), dto.getName(),dto.getAddress() , dto.getSalary()));
+    public boolean saveCustomer(CustomerDTO dto,Connection connection) throws SQLException, ClassNotFoundException {
+        return customerDAO.save( new Customer(dto.getId(), dto.getName(),dto.getAddress() , dto.getSalary()),connection);
     }
 
     @Override
-    public boolean updateCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException {
-        return customerDAO.update( new Customer(dto.getId(), dto.getName(),dto.getAddress() , dto.getSalary()));
+    public boolean updateCustomer(CustomerDTO dto,Connection connection) throws SQLException, ClassNotFoundException {
+        return customerDAO.update( new Customer(dto.getId(), dto.getName(),dto.getAddress() , dto.getSalary()),connection);
     }
 
     @Override
-    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
-        return customerDAO.delete(id);
+    public boolean deleteCustomer(String id,Connection connection) throws SQLException, ClassNotFoundException {
+        return customerDAO.delete(id,connection);
     }
 }
