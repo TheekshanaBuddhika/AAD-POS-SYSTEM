@@ -111,7 +111,7 @@ function updateCustomer() {
                     console.log("success: ", resp);
                     console.log("success: ", textStatus);
                     console.log("success: ", jqxhr);
-                 
+                    getAll();
                 },
                 error: function (jqxhr, textStatus, error) {
                     console.log("error: ", jqxhr);
@@ -119,7 +119,6 @@ function updateCustomer() {
                     console.log("error: ", error);
                 }
             })
-            getAll();
             clearUpdateFiald();
 }
 
@@ -167,89 +166,63 @@ function getAll() {
     
 }
 
+let eventsBound = false;
+
+//Bind EDIT And Delete events
 function setEvent() {
+    if (!eventsBound) {
+        $('#tblCustomer').on('click', 'tr', function () {
+            var $row = $(this).closest("tr"),
+                $tds = $row.find("td:nth-child(1)"),
+                $ts = $row.find("td:nth-child(2)"),
+                $tt = $row.find("td:nth-child(3)"),
+                $tf = $row.find("td:nth-child(4)");
 
-    $(`#tblCustomer tr`).click(function () {
-
-        var $row = $(this).closest("tr"),
-            $tds = $row.find("td:nth-child(1)");
-        $ts = $row.find("td:nth-child(2)");
-        $tt = $row.find("td:nth-child(3)");
-        $tf = $row.find("td:nth-child(4)");
-        // let td_list =  $();
-
-        $(`#upCID`).val($tds.text());
-        $(`#upCName`).val($ts.text());
-        $(`#upCAddress`).val($tt.text());
-        $(`#upCTp`).val($tf.text());
-
-    });
-
-    $('.delete').click(function () {
-        $(`#tblCustomer tr`).click(function () {
-
-            var $row = $(this).closest("tr");        // Finds the closest row <tr>
-            $tds = $row.find("td:nth-child(1)");
-
-            if (searchCustomer($tds.text()) === undefined) {
-                alert("No such Customer..please check the ID");
-            } else {
-                if (deleteFunc($tds.text())){
-                    // $(this).closest("tr").remove();
-                    alert("customer Deleted !");
-                    getAll();
-                }
-            }
+            $(`#upCID`).val($tds.text());
+            $(`#upCName`).val($ts.text());
+            $(`#upCAddress`).val($tt.text());
+            $(`#upCTp`).val($tf.text());
         });
-    });
 
+        $('#tblCustomer').on('click', '.delete', function (event) {
+            event.stopPropagation(); // Prevent click event from reaching tr elements
 
-}
+            var $row = $(this).closest("tr"),
+                $tds = $row.find("td:nth-child(1)");
 
-$('.delete').click(function () {
-    $(`#tblCustomer tr`).click(function () {
+            isIdExists($tds.text(), function (exists) {
+                if (exists) {
+                    deleteFunc($tds.text());
+                } else {
+                    alert("No such Customer..please check the ID");
+                }
+            });
+        });
 
-        var $row = $(this).closest("tr");        // Finds the closest row <tr>
-        $tds = $row.find("td:nth-child(1)");
-
-        if (searchCustomer($tds.text()) === undefined) {
-            alert("No such Customer..please check the ID");
-        } else {
-            if (deleteFunc($tds.text())){
-                // $(this).closest("tr").remove();
-                alert("customer Deleted !");
-                getAll();
-            }
-        }
-    });
-});
-
-function deleteFunc(id){
-    for (let i = 0; i < customerDB.length; i++) {
-        if (customerDB[i].id == id) {
-            customerDB.splice(i, 1);
-            return true
-        }
+        eventsBound = true;
     }
-    return false;
 }
 
-$(`#tblCustomer tr`).click(function () {
+setEvent();
 
-    var $row = $(this).closest("tr");        // Finds the closest row <tr>
-    $tds = $row.find("td:nth-child(1)");
-    $ts = $row.find("td:nth-child(2)");
-    $tt = $row.find("td:nth-child(3)");
-    $tf = $row.find("td:nth-child(4)");
-    // let td_list =  $();
-
-    $(`#upCID`).val($tds.text());
-    $(`#upCName`).val($ts.text());
-    $(`#upCAddress`).val($tt.text());
-    $(`#upCTp`).val($tf.text());
-
-
-});
+//Delete Customer
+function deleteFunc(id){
+    $.ajax({
+        url: "http://localhost:8080/app/customers?id=" + id,
+        method: "DELETE",
+        success: function (resp, textStatus, jqxhr) {
+            console.log("success: ", resp);
+            console.log("success: ", textStatus);
+            console.log("success: ", jqxhr);
+            getAll();
+        },
+        error: function (jqxhr, textStatus, error) {
+            console.log("error: ", jqxhr);
+            console.log("error: ", textStatus);
+            console.log("error: ", error);
+        }
+    })
+}       
 
 $('#txtSearch').on('keyup',function (){
 
