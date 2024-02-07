@@ -36,4 +36,9 @@ public class ItemDAOImpl implements ItemDAO {
         return SQLUtil.execute(connection,"DELETE FROM item WHERE code=?", code);
     }
 
+    @Override
+    public boolean exist(String s, Connection connection) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
 }

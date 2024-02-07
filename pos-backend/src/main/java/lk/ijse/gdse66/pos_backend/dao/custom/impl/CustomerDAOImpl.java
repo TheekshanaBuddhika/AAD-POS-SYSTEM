@@ -36,5 +36,10 @@ public class CustomerDAOImpl implements CustomerDAO {
         return SQLUtil.execute(connection,"DELETE FROM customer WHERE id=?", code);
     }
 
+    @Override
+    public boolean exist(String s, Connection connection) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
 
 }

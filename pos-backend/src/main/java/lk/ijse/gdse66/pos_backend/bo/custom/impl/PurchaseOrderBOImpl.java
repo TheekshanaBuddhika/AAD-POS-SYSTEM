@@ -26,7 +26,7 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
 
         try {
 
-            if (orderDAO.exist(dto.getOrderId())) {
+            if (orderDAO.exist(dto.getId(),connection)){
                 return false;
             }
 

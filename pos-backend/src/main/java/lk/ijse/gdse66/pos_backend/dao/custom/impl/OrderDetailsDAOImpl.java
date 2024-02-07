@@ -27,4 +27,9 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     public boolean delete(String s, Connection connection) throws SQLException, ClassNotFoundException {
         return false;
     }
+
+    @Override
+    public boolean exist(String s, Connection connection) throws SQLException, ClassNotFoundException {
+        return false;
+    }
 }
