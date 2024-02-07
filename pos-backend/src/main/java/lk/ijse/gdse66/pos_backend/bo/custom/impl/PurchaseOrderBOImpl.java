@@ -50,9 +50,9 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
                 }
 
 //                //Search & Update Item
-                ItemDTO item = findItemByID(orderDetailsEntity.getItemCode());
+                ItemDTO item = findItemByID(orderDetailsEntity.getItemCode(),connection);
                 item.setQtyOnHand(item.getQtyOnHand() - orderDetailsEntity.getQty());
-                boolean itemUpdate = itemDAO.update(new Item(item.getCode(), item.getDescription(), item.getQtyOnHand(), item.getUnitPrice()));
+                boolean itemUpdate = itemDAO.update(new Item(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()),connection);
 
                 if (!itemUpdate) {
                     connection.rollback();

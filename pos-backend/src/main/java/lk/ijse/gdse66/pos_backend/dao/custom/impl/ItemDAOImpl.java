@@ -43,6 +43,10 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public Item search(String code, Connection connection) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute(connection,"SELECT * FROM item WHERE code=?", code);
+        if (rst.next()) {
+            return new Item(rst.getString(1), rst.getString(2),  rst.getDouble(3),rst.getInt(4));
+        }
         return null;
     }
 
