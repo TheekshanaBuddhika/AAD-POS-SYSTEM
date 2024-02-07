@@ -23,15 +23,14 @@ import java.util.ArrayList;
 @WebServlet(urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
 
-    CustomerBO customerBO= BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
+    CustomerBO customerBO = BoFactory.getBoFactory().getBO(BoFactory.BOTypes.CUSTOMER_BO);
 
     private DataSource source;
 
     @Override
     public void init() throws ServletException {
         try {
-            InitialContext ic = new InitialContext();
-            source = (DataSource) ic.lookup("java:/comp/env/jdbc/pos");
+            source = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/pos");
 
         } catch (NamingException e) {
             throw new RuntimeException(e);

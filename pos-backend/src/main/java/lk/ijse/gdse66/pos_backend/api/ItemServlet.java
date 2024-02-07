@@ -29,8 +29,8 @@ public class ItemServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            InitialContext ic = new InitialContext();
-            source = (DataSource) ic.lookup("java:/comp/env/jdbc/pos");
+
+            source = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/pos");
 
         } catch (NamingException e) {
             throw new RuntimeException(e);
