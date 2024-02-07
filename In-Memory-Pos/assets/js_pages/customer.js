@@ -1,113 +1,132 @@
 let tableBody = $("#body");
 
+// save the customer information
+$('#save-customer').click(function () {
+    let id = $("#customer-gmail").val();
 
-$(`#save-customer`).click(function () {
-        let idval = $("#customer-gmail").val();
-        isIdExists(idval, function (exists) {
-            if (!exists) {
-               // Continue with your existing code for saving the customer
-              saveCustomermain();
-            } else {
-                clearCustomerInputFields();
-                alert("ID already exists. Please choose a different ID.");
-            }
-        });
+    isIdExists(id, function (exists) {
+        if (exists) {
+            clearCustomerInputFields();
+            alert("ID already exists. Please choose a different ID.");
+        } else {
+            // Continue with your existing code for saving the customer
+            let name = $("#customer-name").val();
+            let address = $("#customer-address").val();
+            let salary = $("#customer-tp").val();
+
+            const customerObj = {
+                id: id,
+                name: name,
+                address: address,
+                salary: salary
+            };
+
+            const jsonObj = JSON.stringify(customerObj);
+
+            $.ajax({
+                url: "http://localhost:8080/app/customers",
+                method: "POST",
+                data: jsonObj,
+                contentType: "application/json",
+                success: function (resp, textStatus, jqxhr) {
+                    console.log("success: ", resp);
+                    console.log("success: ", textStatus);
+                    console.log("success: ", jqxhr);
+
+                    if (jqxhr.status == 201)
+                        alert(jqxhr.responseText);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    console.log("error: ", jqxhr);
+                    console.log("error: ", textStatus);
+                    console.log("error: ", error);
+                }
+            });
+
+            getAll();
+            clearCustomerInputFields();
+        }
+    });
 });
 
-function saveCustomermain(){
-    let id = $("#customer-gmail").val();
-    let address = $("#customer-address").val();
-    let name = $("#customer-name").val();
-    let salary = $("#customer-tp").val();
-
-    const customerObj = {
-        id:id,
-        name:name,
-        address:address,
-        salary:salary
-    };
-
-    const jsonObj = JSON.stringify(customerObj);
-
-    $.ajax({
-        url: "http://localhost:8080/app/customers",
-        method: "POST",
-        data: jsonObj,
-        contentType: "application/json",
-        success: function (resp, textStatus, jqxhr) {
-            console.log("success: ", resp);
-            console.log("success: ", textStatus);
-            console.log("success: ", jqxhr);
-         
-            if (jqxhr.status == 201)
-                alert(jqxhr.responseText);
-        },
-        error: function (jqxhr, textStatus, error) {
-            console.log("error: ", jqxhr);
-            console.log("error: ", textStatus);
-            console.log("error: ", error);
-        }
-    })
-    getAll();
-    clearCustomerInputFields();
-}
-
+// check if customer exists
 function isIdExists(id, callback) {
     $.ajax({
         url: "http://localhost:8080/app/customers",
         method: "GET",
         success: function (resp) {
             // ID exists
-            console.log("Success: ", resp);
                 for (const customer of resp) {
                     if(customer.id == id) {
                         callback(true);
+                        return;
                     }
                 }
-            
+                callback(false);
         },
         error: function (jqxhr, textStatus, error) {
             // ID does not exist
-            if (jqxhr.status == 404) {
                 callback(false);
-            } else {
                 console.log("Error checking ID existence: ", jqxhr, textStatus, error);
-            }
         }
     });
 }
 
+//update the customer information
 $('#updateCustomer').on('click', function () {
-    updateCustomer();
+    
+    let idval = $(`#upCID`).val();
+    isIdExists(idval, function (exists) {
+        if (exists) {
+           // Continue with your existing code for updating the customer
+           updateCustomer();
+        } else {
+            clearCustomerInputFields();
+            alert("ID doesnot exists. Please choose a existing ID.");
+        }
+    });
 });
 
 function updateCustomer() {
     let id = $(`#upCID`).val();
-    if (searchCustomer(id) == undefined) {
-        alert("No such Customer..please check the ID");
-    } else {
-        let consent = confirm("Do you really want to update this customer.?");
-        if (consent) {
-            let customer = searchCustomer(id);
-            //if the customer available can we update.?
-            let name = $(`#upCName`).val();
-            let address = $(`#upCAddress`).val();
-            let tp = $(`#upCTp`).val();
+    let name = $(`#upCName`).val();
+    let address = $(`#upCAddress`).val();
+    let salary = $(`#upCTp`).val();
 
-            customer.name = name;
-            customer.address = address;
-            customer.tp = tp;
-        }
-    }
-    getAll();
-    clearUpdateFiald();
+    const customerupdateObj = {
+                id:id,
+                name:name,
+                address:address,
+                salary:salary
+    };
+        
+    const jsonObjupdate = JSON.stringify(customerupdateObj);
+        
+            $.ajax({
+                url: "http://localhost:8080/app/customers",
+                method: "PUT",
+                data: jsonObjupdate,
+                contentType: "application/json",
+                success: function (resp, textStatus, jqxhr) {
+                    console.log("success: ", resp);
+                    console.log("success: ", textStatus);
+                    console.log("success: ", jqxhr);
+                 
+                },
+                error: function (jqxhr, textStatus, error) {
+                    console.log("error: ", jqxhr);
+                    console.log("error: ", textStatus);
+                    console.log("error: ", error);
+                }
+            })
+            getAll();
+            clearUpdateFiald();
 }
 
-
+//get all customers
 $(`#getAllCustomer`).click(function () {
     getAll();
 });
-
 
 function getAll() {
 

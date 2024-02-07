@@ -1,4 +1,4 @@
-const CUS_ID_REGEX = /^(C0-)[0-9]{3}$/;
+const CUS_ID_REGEX = /^(C0)[0-9]{3}$/;
 const CUS_NAME_REGEX = /^[A-Za-z ]{5,}$/;
 const CUS_ADDRESS_REGEX = /^[A-Za-z0-9 ]{5,}$/;
 const CUS_SALARY_REGEX = /^[1-9]\d*$/;
@@ -138,12 +138,12 @@ function setBtn() {
     }
 
     let id = $("#upCID").val();
-    if (searchCustomer(id) == undefined) {
-        // $("#btnCusDelete").prop("disabled", true);
-        $("#updateCustomer").prop("disabled", true);
-    } else {
-        // $(".delete").prop("disabled", false);
-        $("#updateCustomer").prop("disabled", false);
-    }
+    isIdExists(id, function (exists) {
+        if(!exists) {
+            $("#updateCustomer").prop("disabled", true);
+        } else{
+            $("#updateCustomer").prop("disabled", false);
+        }
+    });
 
 }

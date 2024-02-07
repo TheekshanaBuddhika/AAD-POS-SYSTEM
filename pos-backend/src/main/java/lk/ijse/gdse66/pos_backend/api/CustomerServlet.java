@@ -62,13 +62,13 @@ public class CustomerServlet extends HttpServlet {
         double salary = customerDTO.getSalary();
 
 
-        if(id==null || !id.matches("/^(C0-)[0-9]{3}$/")){
+        if(id==null || !id.matches("^(C0)[0-9]{3}$")){
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID is empty or invalid");
             return;
-        } else if (name == null || !name.matches("[A-Za-z ]+")) {
+        } else if (name == null || !name.matches("^[A-Za-z ]{5,}$")) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Name is empty or invalid");
             return;
-        } else if (address == null || address.length() < 3) {
+        } else if (address == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Address is empty or invalid");
             return;
         }else if (salary < 0.0 ){
