@@ -9,8 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.gdse66.pos_backend.bo.BoFactory;
 import lk.ijse.gdse66.pos_backend.bo.custom.OrderDetailBO;
-import lk.ijse.gdse66.pos_backend.bo.custom.impl.OrderDetailBOImpl;
-import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 import lk.ijse.gdse66.pos_backend.dto.OrderDetailDTO;
 
 import javax.naming.InitialContext;

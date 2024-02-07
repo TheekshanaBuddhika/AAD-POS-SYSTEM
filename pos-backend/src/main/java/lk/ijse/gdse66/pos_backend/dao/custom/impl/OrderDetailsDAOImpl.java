@@ -5,13 +5,19 @@ import lk.ijse.gdse66.pos_backend.dao.custom.impl.util.SQLUtil;
 import lk.ijse.gdse66.pos_backend.entity.OrderDetails;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     @Override
     public ArrayList<OrderDetails> getAll(Connection connection) throws SQLException, ClassNotFoundException {
-        return null;
+        ResultSet rst = SQLUtil.execute(connection,"SELECT * FROM order_detail");
+        ArrayList<OrderDetails> allItems = new ArrayList<>();
+        while (rst.next()) {
+            allItems.add(new OrderDetails(rst.getString(1), rst.getString(2), rst.getInt(3),rst.getDouble(4)));
+        }
+        return allItems;
     }
 
     @Override
