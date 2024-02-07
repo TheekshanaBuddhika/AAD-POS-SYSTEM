@@ -24,8 +24,8 @@ public class BoFactory {
                 return (T) new CustomerBOImpl();
             case ITEM_BO:
                 return (T) new ItemBOImpl();
-          /*  case PURCHASE_ORDER_BO:
-                return (T) new PurchaseOrderBOImpl();*/
+            case PURCHASE_ORDER_BO:
+                return (T) new PurchaseOrderBOImpl();
             default:
                 return null;
         }
