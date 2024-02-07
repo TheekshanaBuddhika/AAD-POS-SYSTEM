@@ -41,7 +41,7 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
             }
 
             for (OrderDetailDTO odDTO : dto.getOrderDetaisList()) {
-                OrderDetails orderDetailsEntity = new OrderDetails(odDTO.getOrderID(), odDTO.getItemCode(), odDTO.getQty(), odDTO.getUnitPrice());
+                OrderDetails orderDetailsEntity = new OrderDetails(odDTO.getOrderId(), odDTO.getItemCode(), odDTO.getQty(), odDTO.getUnitPrice());
                 boolean odAdded = orderDetailsDAO.save(orderDetailsEntity,connection);
                 if (!odAdded) {
                     connection.rollback();
@@ -69,5 +69,17 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public ItemDTO findItemByID(String code) {
+        try {
+            Item search = itemDAO.search(code);
+            return new ItemDTO(search.getCode(),search.getDescription(),search.getUnitPrice(),search.getQtyOnHand());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find the Item " + code, e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
