@@ -1,7 +1,43 @@
 let tableBody = $("#body");
 
-
+//save the customer information
 $(`#save-customer`).click(function () {
+
+    let id = $('#txt-id').val();
+    let name = $('#txt-name').val();
+    let address = $('#txt-address').val();
+
+
+    const customerObj = {
+        id:id,
+        name:name,
+        address:address
+    };
+
+    const jsonObj = JSON.stringify(customerObj);
+
+    $.ajax({
+        url: "http://localhost:8080/app/customers",
+        method: "POST",
+        data: jsonObj,
+        contentType: "application/json",
+        success: function (resp, textStatus, jqxhr) {
+            console.log("success: ", resp);
+            console.log("success: ", textStatus);
+            console.log("success: ", jqxhr);
+            /*if(jqxhr.status == 201)
+                alert("Added customer successfully")*/
+            if (jqxhr.status == 201)
+                alert(jqxhr.responseText);
+        },
+        error: function (jqxhr, textStatus, error) {
+            console.log("error: ", jqxhr);
+            console.log("error: ", textStatus);
+            console.log("error: ", error);
+        }
+    })
+    ////////////////////////////////////////////////////////////////////////////////////////
+
     let idVal = $("#customer-gmail").val();
     if (searchCustomer(idVal.trim()) === undefined) {
         let id = $("#customer-gmail");
@@ -22,6 +58,8 @@ $(`#save-customer`).click(function () {
     getAll();
     clearCustomerInputFields();
 });
+
+
 
 function searchCustomer(id) {
     return customerDB.find(function (customer) {
