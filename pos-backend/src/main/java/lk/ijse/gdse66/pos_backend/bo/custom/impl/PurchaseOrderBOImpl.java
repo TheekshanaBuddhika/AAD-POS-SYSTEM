@@ -32,8 +32,8 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
 
             connection.setAutoCommit(false);
 
-            Orders orderEntity = new Orders(dto.getOrderId(), dto.getOrderDate(), dto.getCustomerId());
-            boolean orderAdded = orderDAO.save(orderEntity);
+            Orders orderEntity = new Orders(dto.getId(), dto.getDate(), dto.getCustomerId());
+            boolean orderAdded = orderDAO.save(orderEntity,connection);
             if (!orderAdded) {
                 connection.rollback();
                 connection.setAutoCommit(true);
@@ -42,7 +42,7 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
 
             for (OrderDetailDTO odDTO : dto.getOrderDetaisList()) {
                 OrderDetails orderDetailsEntity = new OrderDetails(odDTO.getOrderID(), odDTO.getItemCode(), odDTO.getQty(), odDTO.getUnitPrice());
-                boolean odAdded = orderDetailsDAO.save(orderDetailsEntity);
+                boolean odAdded = orderDetailsDAO.save(orderDetailsEntity,connection);
                 if (!odAdded) {
                     connection.rollback();
                     connection.setAutoCommit(true);
