@@ -226,62 +226,48 @@ function deleteFunc(id){
 
 $('#txtSearch').on('keyup',function (){
 
-    let txtVal = $('#txtSearch').val(); 
+    let txtVal = $('#txtSearch').val();
 
-    if (txtVal === ''){
+    if (txtVal === '') {
         getAll();
+        return;
     }
 
     $(`#body`).empty();
+    const searchType = $("#cusSearch").val();
 
     $.ajax({
-        url : "http://localhost:8080/app/customers",
-        method : "GET",
-        success : function (resp) {
+        url: "http://localhost:8080/app/customers",
+        method: "GET",
+        success: function (resp) {
             console.log("Success: ", resp);
+
             for (const customer of resp) {
-                
-        if ($("#cusSearch").val() == "Customer Id") {
-            if (customer.id.indexOf($("#txtSearch").val()) !== -1) {
-                $("#tblCustomer > tbody").append($(`#body`).append(`<tr>
-                                <td>${customer.id}</td>
-                                <td>${customer.name}</td>
-                                <td>${customer.address}</td>
-                                <td>${customer.salary}</td>
-                                <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal2">
-                                    Edit
-                                </button>
-                                <button class="btn btn-danger me-3 btn-sm delete">Delete</button></td>
-                   
-                             </tr>`));
-                             setEvent();
-            }
-        } else {
-            if (customer.name.indexOf($("#txtSearch").val()) !== -1) {
+                const searchText = (searchType === "Customer Id") ? customer.id : customer.name;
 
-                $("#tblCustomer > tbody").append($(`#body`).append(`<tr>
-                                <td>${customer.id}</td>
-                                <td>${customer.name}</td>
-                                <td>${customer.address}</td>
-                                <td>${customer.salary}</td>
-                                <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal2">
-                                    Edit
-                                </button>
-                                <button class="btn btn-danger me-3 btn-sm delete">Delete</button></td>
-                   
-                             </tr>`));
-                             setEvent();
-            }
-        }
-            }
+                if (searchText.includes($("#txtSearch").val())) {
+                    const customerRow = `<tr>
+                        <td>${customer.id}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.address}</td>
+                        <td>${customer.salary}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal2">Edit
+                            </button>
+                            <button class="btn btn-danger me-3 btn-sm delete">Delete</button>
+                        </td>
+                    </tr>`;
 
+                    $("#tblCustomer > tbody").append($(`#body`).append(customerRow));
+                    setEvent();
+                }
+            }
         },
-        error : function (error) {
+        error: function (error) {
             console.log("error: ", error);
         }
-    })
+    });
 });
 
 getAll();
