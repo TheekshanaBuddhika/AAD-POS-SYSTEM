@@ -9,13 +9,7 @@ import java.sql.SQLException;
 
 public class SQLUtil{
 
-    @Resource(name = "java:/comp/env/jdbc/pos")
-
-    private static DataSource pool;
-
-    public static <T>T execute(String sql,Object... args) throws SQLException, ClassNotFoundException {
-
-        try(Connection connection = pool.getConnection();){
+    public static <T>T execute(Connection connection ,String sql,Object... args) throws SQLException, ClassNotFoundException {
 
             PreparedStatement pstm = connection.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) {
@@ -27,9 +21,7 @@ public class SQLUtil{
                 return (T)  new Boolean(pstm.executeUpdate()>0);
             }
 
-        }
-
-
     }
+
 
 }

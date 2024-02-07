@@ -6,7 +6,7 @@ import lk.ijse.gdse66.pos_backend.dao.custom.CustomerDAO;
 import lk.ijse.gdse66.pos_backend.dto.CustomerDTO;
 import lk.ijse.gdse66.pos_backend.entity.Customer;
 
-import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -15,8 +15,8 @@ public class CustomerBOImpl implements CustomerBO {
     CustomerDAO customerDAO =  DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.CUSTOMER);
 
     @Override
-    public ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {
-        ArrayList<Customer> all = customerDAO.getAll();
+    public ArrayList<CustomerDTO> getAllCustomers(Connection connection) throws SQLException, ClassNotFoundException {
+        ArrayList<Customer> all = customerDAO.getAll(connection);
         ArrayList<CustomerDTO> arrayList= new ArrayList<>();
         for (Customer c : all) {
             arrayList.add(new CustomerDTO(c.getId(),c.getName(),c.getAddress(),c.getSalary()));
