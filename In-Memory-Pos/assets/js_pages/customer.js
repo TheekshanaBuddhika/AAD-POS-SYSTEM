@@ -65,13 +65,22 @@ function getAll() {
 
     $(`#body`).empty();
 
-    for (const customer of customerDB) {
+    $.ajax({
+        url : "http://localhost:8080/app/customers",
+        method : "GET",
+        success : function (resp) {
+            console.log("Success: ", resp);
+            for (const customer of resp) {
+                console.log(customer.id);
+                console.log(customer.name);
+                console.log(customer.address);
+                console.log(customer.salary);
 
-        $(`#body`).append(`<tr>
+                $(`#body`).append(`<tr>
                                 <td>${customer.id}</td>
                                 <td>${customer.name}</td>
                                 <td>${customer.address}</td>
-                                <td>${customer.tp}</td>
+                                <td>${customer.salary}</td>
                                 <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal2">
                                     Edit
@@ -79,9 +88,16 @@ function getAll() {
                                 <button class="btn btn-danger me-3 btn-sm delete">Delete</button></td>
                    
                              </tr>`);
-    }
+                setEvent();
+            }
 
-    setEvent();
+        },
+        error : function (error) {
+            console.log("error: ", error);
+        }
+    })
+
+    
 }
 
 function setEvent() {
