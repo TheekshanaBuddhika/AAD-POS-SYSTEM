@@ -5,6 +5,7 @@ import lk.ijse.gdse66.pos_backend.dao.custom.impl.util.SQLUtil;
 import lk.ijse.gdse66.pos_backend.entity.Orders;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean save(Orders dto, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean save(Orders entity, Connection connection) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute(connection,"INSERT INTO `orders` (id, date, customerID) VALUES (?,?,?)", entity.getId(), Date.valueOf(entity.getDate()), entity.getCustomerID());
+
     }
 
     @Override
