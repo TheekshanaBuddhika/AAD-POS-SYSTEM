@@ -35,4 +35,9 @@ public class OrderDAOImpl implements OrderDAO {
         ResultSet rst = SQLUtil.execute(connection,"SELECT id FROM `orders` WHERE id=?", orderID);
         return rst.next();
     }
+
+    @Override
+    public Orders search(String code, Connection connection) throws SQLException, ClassNotFoundException {
+        return null;
+    }
 }

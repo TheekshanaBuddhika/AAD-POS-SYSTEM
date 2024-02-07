@@ -32,4 +32,9 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     public boolean exist(String s, Connection connection) throws SQLException, ClassNotFoundException {
         return false;
     }
+
+    @Override
+    public OrderDetails search(String code, Connection connection) throws SQLException, ClassNotFoundException {
+        return null;
+    }
 }

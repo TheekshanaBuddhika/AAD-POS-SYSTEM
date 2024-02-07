@@ -1,6 +1,8 @@
 package lk.ijse.gdse66.pos_backend.dao;
 
 
+import lk.ijse.gdse66.pos_backend.entity.Item;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,4 +18,5 @@ public interface CrudDAO<T,ID> extends SuperDAO{
 
     boolean exist(ID id,Connection connection) throws SQLException, ClassNotFoundException;
 
+    T search(ID code, Connection connection)throws SQLException, ClassNotFoundException;
 }

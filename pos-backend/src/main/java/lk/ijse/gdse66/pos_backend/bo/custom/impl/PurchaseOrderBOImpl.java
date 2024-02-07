@@ -71,9 +71,9 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
         return false;
     }
 
-    public ItemDTO findItemByID(String code) {
+    public ItemDTO findItemByID(String code,Connection connection) {
         try {
-            Item search = itemDAO.search(code);
+            Item search = itemDAO.search(code,connection);
             return new ItemDTO(search.getCode(),search.getDescription(),search.getUnitPrice(),search.getQtyOnHand());
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find the Item " + code, e);

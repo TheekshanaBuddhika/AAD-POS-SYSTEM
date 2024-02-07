@@ -41,5 +41,10 @@ public class CustomerDAOImpl implements CustomerDAO {
         return false;
     }
 
+    @Override
+    public Customer search(String code, Connection connection) throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
 
 }

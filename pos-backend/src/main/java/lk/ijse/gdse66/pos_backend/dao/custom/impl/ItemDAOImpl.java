@@ -41,4 +41,9 @@ public class ItemDAOImpl implements ItemDAO {
         return false;
     }
 
+    @Override
+    public Item search(String code, Connection connection) throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
 }
