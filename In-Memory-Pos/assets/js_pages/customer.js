@@ -226,21 +226,28 @@ function deleteFunc(id){
 
 $('#txtSearch').on('keyup',function (){
 
-    let txtVal = $('#txtSearch');
+    let txtVal = $('#txtSearch').val(); 
 
-    if (txtVal.val() === ''){
+    if (txtVal === ''){
         getAll();
     }
 
     $(`#body`).empty();
-    for (let customer of customerDB) {
+
+    $.ajax({
+        url : "http://localhost:8080/app/customers",
+        method : "GET",
+        success : function (resp) {
+            console.log("Success: ", resp);
+            for (const customer of resp) {
+                
         if ($("#cusSearch").val() == "Customer Id") {
             if (customer.id.indexOf($("#txtSearch").val()) !== -1) {
                 $("#tblCustomer > tbody").append($(`#body`).append(`<tr>
                                 <td>${customer.id}</td>
                                 <td>${customer.name}</td>
                                 <td>${customer.address}</td>
-                                <td>${customer.tp}</td>
+                                <td>${customer.salary}</td>
                                 <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal2">
                                     Edit
@@ -248,6 +255,7 @@ $('#txtSearch').on('keyup',function (){
                                 <button class="btn btn-danger me-3 btn-sm delete">Delete</button></td>
                    
                              </tr>`));
+                             setEvent();
             }
         } else {
             if (customer.name.indexOf($("#txtSearch").val()) !== -1) {
@@ -256,7 +264,7 @@ $('#txtSearch').on('keyup',function (){
                                 <td>${customer.id}</td>
                                 <td>${customer.name}</td>
                                 <td>${customer.address}</td>
-                                <td>${customer.tp}</td>
+                                <td>${customer.salary}</td>
                                 <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal2">
                                     Edit
@@ -264,10 +272,16 @@ $('#txtSearch').on('keyup',function (){
                                 <button class="btn btn-danger me-3 btn-sm delete">Delete</button></td>
                    
                              </tr>`));
+                             setEvent();
             }
         }
-    }
-});
+            }
 
+        },
+        error : function (error) {
+            console.log("error: ", error);
+        }
+    })
+});
 
 getAll();
