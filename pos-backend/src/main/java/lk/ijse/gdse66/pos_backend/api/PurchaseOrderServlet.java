@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import lk.ijse.gdse66.pos_backend.bo.BoFactory;
+import lk.ijse.gdse66.pos_backend.bo.custom.PurchaseOrderBO;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
