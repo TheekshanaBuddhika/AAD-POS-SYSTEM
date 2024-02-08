@@ -26,6 +26,7 @@ function updateItem(){
     clearUpdateTxt();
 }
 
+//save the item
 $('#btnSaveItem').on('click', function () {
     saveItem();
 });
@@ -47,6 +48,7 @@ function saveItem() {
     clearItemTxt();
 }
 
+//search for items
 function searchItem(id, callback) {
     $.ajax({
         url: "http://localhost:8080/app/items",
@@ -69,7 +71,7 @@ function searchItem(id, callback) {
     });
 }
 
-
+//get the item
 $('#btnGetAllItem').on('click', function () {
     getAllItem();
 });
@@ -94,7 +96,7 @@ function getAllItem() {
     setEvent();
 }
 
-
+//Bind EDIT And Delete events
 function setEvent() {
 
     $(`#tblItem tr`).click(function () {
