@@ -55,7 +55,6 @@ public class CustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-        System.out.println(customerDTO.toString());
         String id = customerDTO.getId();
         String name = customerDTO.getName();
         String address = customerDTO.getAddress();
