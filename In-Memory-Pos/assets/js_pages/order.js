@@ -32,24 +32,50 @@ $('#btnPlaceOrder').on('click', function () {
     for (const tr of trList) {
         let child = $(tr).children();
         let object = {
-            oid: $('#txtOrderId').val(),
-            code: $(child[0]).text(),
+            orderId:$('#txtOrderId').val(),
+            itemCode: $(child[0]).text(),
             qty: $(child[3]).text(),
             unitPrice: $(child[2]).text()
         }
         itemList.push(object);
     }
 
-    orderDB.push({
-        oid: $("#txtOrderId").val(),
+    console.log(itemList);
+
+    let customerId = $('#selCusId').val();
+    console.log(customerId);
+    const orderObj = {
+        id: $("#txtOrderId").val(),
         date: $('#txtDate').val(),
-        customerID: $('#selCusId').val(),
-        orderDetails: itemList
+        customerId:customerId,
+        orderDetaisList: itemList
+    };
+
+    const jsonorderObj = JSON.stringify(orderObj);
+
+    $.ajax({
+        url: "http://localhost:8080/app/orders",
+        method: "POST",
+        data: jsonorderObj,
+        contentType: "application/json",
+        success: function (resp, textStatus, jqxhr) {
+            console.log("success: ", resp);
+            console.log("success: ", textStatus);
+            console.log("success: ", jqxhr);
+
+            if (jqxhr.status == 201)
+                alert(jqxhr.responseText);
+        },
+        error: function (jqxhr, textStatus, error) {
+            console.log("error: ", jqxhr);
+            console.log("error: ", textStatus);
+            console.log("error: ", error);
+        }
     });
 
     clearAll();
     $('#order-tbl-body').empty();
-    loadAllOrderDetails();
+ //   loadAllOrderDetails();
 
 });
 
