@@ -1,4 +1,4 @@
-
+let tableBody =   $('#Item-body');
 //update the items
 $('#btnUpdateItem').on('click',function (){
     let idval = $(`#upItemId`).val();
