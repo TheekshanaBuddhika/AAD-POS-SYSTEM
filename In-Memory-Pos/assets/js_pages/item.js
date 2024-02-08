@@ -1,51 +1,110 @@
 
 //update the items
 $('#btnUpdateItem').on('click',function (){
-    updateItem();
+    let idval = $(`#upItemId`).val();
+    searchItem(idval, function (exists) {
+        if (exists) {
+           // Continue with your existing code for updating the items
+           updateItem();
+        } else {
+            clearUpdateTxt();
+            alert("Code doesnot exists. Please choose a existing Code.");
+        }
+    });
 });
 
 function updateItem(){
-    let id = $(`#upItemId`).val();
-    if (searchItem(id) == undefined) {
-        alert("No such Item..please check the ID");
-    } else {
         let consent = confirm("Do you really want to update this item.?");
         if (consent) {
-            let item = searchItem(id);
+            let code = $(`#upItemId`).val();
             let description = $(`#upItemdesc`).val();
             let unitPrice = $(`#upUnitPrice`).val();
             let qty = $(`#upQty`).val();
 
-            item.description = description;
-            item.unitPrice = unitPrice;
-            item.qtyOnHand = qty;
+            const itemupdateObj = {
+                code:code,
+                description:description,
+                unitPrice:unitPrice,
+                qty:qty
+    };
 
+    const jsonitmupdate = JSON.stringify(itemupdateObj);
+        
+    $.ajax({
+        url: "http://localhost:8080/app/items",
+        method: "PUT",
+        data: jsonitmupdate,
+        contentType: "application/json",
+        success: function (resp, textStatus, jqxhr) {
+            console.log("success: ", resp);
+            console.log("success: ", textStatus);
+            console.log("success: ", jqxhr);
+            getAll();
+        },
+        error: function (jqxhr, textStatus, error) {
+            console.log("error: ", jqxhr);
+            console.log("error: ", textStatus);
+            console.log("error: ", error);
         }
+    })
+        clearUpdateTxt();
     }
-    getAllItem();
-    clearUpdateTxt();
+    
 }
 
 //save the item
 $('#btnSaveItem').on('click', function () {
-    saveItem();
+    let id = $('#txtItemId').val();
+    searchItem(id, function (exists) {
+        if (exists) {
+            clearItemTxt();
+            alert("Code already exists. Please choose a different Code.");
+        } else {
+            saveItem();
+        }
+    });
 });
 
 function saveItem() {
-    let itemId = $('#txtItemId').val();
-    if (searchItem(itemId.trim()) === undefined) {
-        item = {
-            code: $('#txtItemId').val(),
-            description: $('#txtItemdec').val(),
-            qtyOnHand: $('#txtItemQty').val(),
-            unitPrice: $('#txtItemUnitPrice').val()
-        }
-        itemDB.push(item);
-        getAllItem();
-    } else {
-        alert('already exits Item id');
-    }
-    clearItemTxt();
+    
+    let code = $(`#upItemId`).val();
+    let description = $(`#upItemdesc`).val();
+    let unitPrice = $(`#upUnitPrice`).val();
+    let qty = $(`#upQty`).val();
+
+            const itemObj = {
+                code: code,
+                description: description,
+                unitPrice: unitPrice,
+                qty: qty
+            };
+
+            const jsonitmObj = JSON.stringify(itemObj);
+
+            $.ajax({
+                url: "http://localhost:8080/app/items",
+                method: "POST",
+                data: jsonitmObj,
+                contentType: "application/json",
+                success: function (resp, textStatus, jqxhr) {
+                    console.log("success: ", resp);
+                    console.log("success: ", textStatus);
+                    console.log("success: ", jqxhr);
+                    getAll();
+                    if (jqxhr.status == 201)
+                        alert(jqxhr.responseText);
+                        
+                },
+                error: function (jqxhr, textStatus, error) {
+                    console.log("error: ", jqxhr);
+                    console.log("error: ", textStatus);
+                    console.log("error: ", error);
+                }
+            });
+
+          
+            clearItemTxt();
+
 }
 
 //search for items
