@@ -1,3 +1,5 @@
+
+//update the items
 $('#btnUpdateItem').on('click',function (){
     updateItem();
 });
@@ -45,9 +47,25 @@ function saveItem() {
     clearItemTxt();
 }
 
-function searchItem(id) {
-    return itemDB.find(function (item) {
-        return item.code === id;
+function searchItem(id, callback) {
+    $.ajax({
+        url: "http://localhost:8080/app/items",
+        method: "GET",
+        success: function (resp) {
+            // ID exists
+                for (const item of resp) {
+                    if(item.code == id) {
+                        callback(true);
+                        return;
+                    }
+                }
+                callback(false);
+        },
+        error: function (jqxhr, textStatus, error) {
+            // ID does not exist
+                callback(false);
+                console.log("Error checking ID existence: ", jqxhr, textStatus, error);
+        }
     });
 }
 
