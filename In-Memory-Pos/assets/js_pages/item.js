@@ -66,10 +66,10 @@ $('#btnSaveItem').on('click', function () {
 
 function saveItem() {
     
-    let code = $(`#upItemId`).val();
-    let description = $(`#upItemdesc`).val();
-    let unitPrice = $(`#upUnitPrice`).val();
-    let qty = $(`#upQty`).val();
+    let code = $(`#txtItemId`).val();
+    let description = $(`#txtItemdec`).val();
+    let unitPrice = $(`#txtItemUnitPrice`).val();
+    let qty = $(`#txtItemQty`).val();
 
             const itemObj = {
                 code: code,
