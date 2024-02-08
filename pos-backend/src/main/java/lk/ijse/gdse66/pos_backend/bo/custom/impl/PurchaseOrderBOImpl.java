@@ -25,37 +25,48 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
     @Override
     public boolean saveOrder(OrderDTO dto, DataSource source) throws SQLException, ClassNotFoundException {
 
-        try {
+        try ( Connection connection = source.getConnection();){
 
-            Connection connection = source.getConnection();
-
-            if (orderDAO.exist(dto.getId(),source.getConnection())){
-                return false;
+            try(Connection connection1 = source.getConnection()){
+                if (orderDAO.exist(dto.getId(),connection1)){
+                    return false;
+                }
             }
 
             connection.setAutoCommit(false);
 
             Orders orderEntity = new Orders(dto.getId(), dto.getDate(), dto.getCustomerId());
-            boolean orderAdded = orderDAO.save(orderEntity,source.getConnection());
-            if (!orderAdded) {
-                connection.rollback();
-                connection.setAutoCommit(true);
-                return false;
-            }
 
-            for (OrderDetailDTO odDTO : dto.getOrderDetaisList()) {
-                OrderDetails orderDetailsEntity = new OrderDetails(odDTO.getOrderId(), odDTO.getItemCode(), odDTO.getQty(), odDTO.getUnitPrice());
-                boolean odAdded = orderDetailsDAO.save(orderDetailsEntity, source.getConnection());
-                if (!odAdded) {
+            try (Connection connection2 = source.getConnection();){
+                boolean orderAdded = orderDAO.save(orderEntity,connection2);
+                if (!orderAdded) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
                 }
+            }
 
-                ItemDTO item = findItemByID(orderDetailsEntity.getItemCode(), source.getConnection());
-                item.setQtyOnHand(item.getQtyOnHand() - orderDetailsEntity.getQty());
-                boolean itemUpdate = itemDAO.update(new Item(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()), source.getConnection());
+            for (OrderDetailDTO odDTO : dto.getOrderDetaisList()) {
+                OrderDetails orderDetailsEntity = new OrderDetails(odDTO.getOrderId(), odDTO.getItemCode(), odDTO.getQty(), odDTO.getUnitPrice());
+                try (Connection connection3 = source.getConnection();){
+                    boolean odAdded = orderDetailsDAO.save(orderDetailsEntity, connection3);
+                    if (!odAdded) {
+                        connection.rollback();
+                        connection.setAutoCommit(true);
+                        return false;
+                    }
+                }
+                ItemDTO item;
+                try (Connection connection4 = source.getConnection();){
+                    item = findItemByID(orderDetailsEntity.getItemCode(), connection4);
+                    item.setQtyOnHand(item.getQtyOnHand() - orderDetailsEntity.getQty());
+                }
 
+                boolean itemUpdate;
+
+                try (Connection connection5 = source.getConnection();) {
+                    itemUpdate = itemDAO.update(new Item(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()), connection5);
+                }
                 if (!itemUpdate) {
                     connection.rollback();
                     connection.setAutoCommit(true);

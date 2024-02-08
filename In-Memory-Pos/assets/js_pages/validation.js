@@ -313,6 +313,7 @@ function clearAll() {
     finalTotal = 0;
     final = 0;
     $('#btnAddOrder').prop("disabled", true);
+    $('#selCusId').prop('disabled',true);
 }
 
 function clearBill(){
