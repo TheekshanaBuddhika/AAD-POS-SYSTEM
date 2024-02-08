@@ -1,4 +1,3 @@
-let tableBody =   $('#Item-body');
 //update the items
 $('#btnUpdateItem').on('click',function (){
     let idval = $(`#upItemId`).val();
@@ -143,11 +142,11 @@ function getAllItem() {
         method : "GET",
         success : function (resp) {
             console.log("Success: ", resp);
-            for (const customer of resp) {
-                console.log(customer.id);
-                console.log(customer.name);
-                console.log(customer.address);
-                console.log(customer.salary);
+            for (const item of resp) {
+                console.log(item.code);
+                console.log(item.description);
+                console.log(item.unitPrice);
+                console.log(item.qty);
 
                $(`#Item-body`).append(`<tr>
                                 <td>${item.code}</td>
@@ -171,12 +170,12 @@ function getAllItem() {
     })
 }
 
-let eventsBound = false;
+let eventsBound2 = false;
 
 //Bind EDIT And Delete events
 function setEvent() {
 
-    if (!eventsBound) {
+    if (!eventsBound2) {
         $('#tblItem').on('click', 'tr', function () {
             var $row = $(this).closest("tr"),
                 $tds = $row.find("td:nth-child(1)"),
@@ -205,7 +204,7 @@ function setEvent() {
             });
         });
 
-        eventsBound = true;
+        eventsBound2 = true;
 
     }
 }
