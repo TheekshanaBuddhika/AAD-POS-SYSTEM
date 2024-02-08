@@ -62,9 +62,7 @@ $('#btnPlaceOrder').on('click', function () {
             console.log("success: ", resp);
             console.log("success: ", textStatus);
             console.log("success: ", jqxhr);
-
-            if (jqxhr.status == 201)
-                alert(jqxhr.responseText);
+            loadAllOrderDetails();
         },
         error: function (jqxhr, textStatus, error) {
             console.log("error: ", jqxhr);
@@ -73,8 +71,9 @@ $('#btnPlaceOrder').on('click', function () {
         }
     });
 
+    
     clearAll();
-    $('#order-tbl-body').empty();
+    $('#order-tbl-body').empty(); 
 });
 
 //add order to cart list

@@ -1,6 +1,6 @@
-loadAllOrderDetails();
-
 function loadAllOrderDetails(){
+
+    $(`#order-detail-body`).empty();
 
     $.ajax({
             url: "http://localhost:8080/app/detail",
@@ -22,4 +22,7 @@ function loadAllOrderDetails(){
         });
 
 }
+
+loadAllOrderDetails();
+
 

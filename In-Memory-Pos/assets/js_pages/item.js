@@ -69,7 +69,7 @@ function saveItem() {
     let code = $(`#txtItemId`).val();
     let description = $(`#txtItemdec`).val();
     let unitPrice = $(`#txtItemUnitPrice`).val();
-    let qty = $(`#txtItemQty`).val();
+    let qtyOnHand = $(`#txtItemQty`).val();
 
             const itemObj = {
                 code: code,
