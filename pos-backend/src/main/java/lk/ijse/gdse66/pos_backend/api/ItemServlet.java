@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -29,9 +30,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-
             source = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/pos");
-
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }
@@ -39,8 +38,8 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            ArrayList<ItemDTO> allitems = itemBO.getAllItems(source.getConnection());
+        try(Connection connection = source.getConnection();) {
+            ArrayList<ItemDTO> allitems = itemBO.getAllItems(connection);
             resp.setContentType("application/json");
             Jsonb jsonb = JsonbBuilder.create();
             jsonb.toJson(allitems,resp.getWriter());
@@ -59,10 +58,10 @@ public class ItemServlet extends HttpServlet {
         int qty = itemDTO.getQtyOnHand();
 
 
-        if(code==null || !code.matches("I\\d{3}")){
+        if(code==null || !code.matches("^(P0)[0-9]{3}$")){
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Item Code is empty or invalid");
             return;
-        } else if (description == null || !description.matches("[A-Za-z ]+")) {
+        } else if (description == null || !description.matches("^[A-Za-z ]{5,}$")) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Description is empty or invalid");
             return;
         } else if (unitPrice < 0.0) {
@@ -73,9 +72,9 @@ public class ItemServlet extends HttpServlet {
             return;
         }
 
-        try {
+        try(Connection connection = source.getConnection();) {
 
-            boolean saveItem = itemBO.saveItem(new ItemDTO(code,description,unitPrice,qty), source.getConnection());
+            boolean saveItem = itemBO.saveItem(new ItemDTO(code,description,unitPrice,qty), connection);
             if (saveItem) {
                 resp.setStatus(HttpServletResponse.SC_CREATED);
                 resp.getWriter().write("Added item successfully");
@@ -101,9 +100,9 @@ public class ItemServlet extends HttpServlet {
         double unitPrice = itemDTO.getUnitPrice();
         int qty = itemDTO.getQtyOnHand();
 
-        try {
+        try(Connection connection = source.getConnection();) {
 
-            boolean updateItem = itemBO.updateItem(new ItemDTO(code,description,unitPrice,qty), source.getConnection());
+            boolean updateItem = itemBO.updateItem(new ItemDTO(code,description,unitPrice,qty), connection);
             if (updateItem) {
                 resp.setStatus(HttpServletResponse.SC_CREATED);
                 resp.getWriter().write("Updated item successfully");
@@ -122,7 +121,7 @@ public class ItemServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
-        try {
+        try(Connection connection = source.getConnection();) {
             boolean deleteItem = itemBO.deleteItem(id, source.getConnection());
             if(deleteItem){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
