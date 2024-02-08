@@ -263,17 +263,12 @@ function setItemBtn() {
 
     let id = $("#upItemId").val();
 
-    if (searchItemValid(id) == undefined) {
-        $("#btnUpdateItem").prop("disabled", true);
-    } else {
-        $("#btnUpdateItem").prop("disabled", false);
-    }
-
-}
-
-function searchItemValid(id) {
-    return itemDB.find(function (item) {
-        return item.code == id;
+    searchItem(id, function (exists) {
+        if(!exists) {
+            $("#btnUpdateItem").prop("disabled", true);
+        } else{
+            $("#btnUpdateItem").prop("disabled", false);
+        }
     });
 }
 
