@@ -47,7 +47,7 @@ public class PurchaseOrderServlet extends HttpServlet {
         List<OrderDetailDTO> detaisList = orderDTO.getOrderDetaisList();
 
 
-        if(id==null || !id.matches("/^(ORD-)[0-9]{3}$/")){
+        if(id==null || !id.matches("^(OR)[0-9]{3}$")){
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID is empty or invalid");
             return;
         } else if (date == null ) {
