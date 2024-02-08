@@ -33,8 +33,7 @@ $('#save-customer').click(function () {
                     console.log("success: ", textStatus);
                     console.log("success: ", jqxhr);
 
-                    if (jqxhr.status == 201)
-                        alert(jqxhr.responseText);
+                    getAll();
                 },
                 error: function (jqxhr, textStatus, error) {
                     console.log("error: ", jqxhr);
@@ -43,7 +42,7 @@ $('#save-customer').click(function () {
                 }
             });
 
-            getAll();
+           
             clearCustomerInputFields();
         }
     });
