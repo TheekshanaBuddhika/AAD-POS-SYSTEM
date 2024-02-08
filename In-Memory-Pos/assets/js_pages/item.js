@@ -39,7 +39,7 @@ function updateItem(){
             console.log("success: ", resp);
             console.log("success: ", textStatus);
             console.log("success: ", jqxhr);
-            getAll();
+            getAllItem();
         },
         error: function (jqxhr, textStatus, error) {
             console.log("error: ", jqxhr);
@@ -90,7 +90,7 @@ function saveItem() {
                     console.log("success: ", resp);
                     console.log("success: ", textStatus);
                     console.log("success: ", jqxhr);
-                    getAll();
+                    getAllItem();
                     if (jqxhr.status == 201)
                         alert(jqxhr.responseText);
                         
@@ -171,54 +171,68 @@ function getAllItem() {
     })
 }
 
+let eventsBound = false;
+
 //Bind EDIT And Delete events
 function setEvent() {
 
-    $(`#tblItem tr`).click(function () {
+    if (!eventsBound) {
+        $('#tblItem').on('click', 'tr', function () {
+            var $row = $(this).closest("tr"),
+                $tds = $row.find("td:nth-child(1)"),
+                $ts = $row.find("td:nth-child(2)"),
+                $tt = $row.find("td:nth-child(3)"),
+                $tf = $row.find("td:nth-child(4)");
 
-        var $row = $(this).closest("tr");
-        $tds = $row.find("td:nth-child(1)");
-        $ts = $row.find("td:nth-child(2)");
-        $tt = $row.find("td:nth-child(3)");
-        $tf = $row.find("td:nth-child(4)");
-        // let td_list =  $();
-
-        $(`#upItemId`).val($tds.text());
-        $(`#upItemdesc`).val($ts.text());
-        $(`#upUnitPrice`).val($tt.text());
-        $(`#upQty`).val($tf.text());
-
-    });
-
-    $('.deleteItem').click(function () {
-        console.log("delete");
-        $(`#tblItem tr`).click(function () {
-
-            var $row = $(this).closest("tr");        // Finds the closest row <tr>
-            $tds = $row.find("td:nth-child(1)");
-
-            if (searchItem($tds.text()) === undefined) {
-                alert("No such Item..please check the ID");
-            } else {
-                if (deleteItem($tds.text())) {
-                    getAllItem();
-                    alert("Item Deleted !");
-                }
-            }
+                $(`#upItemId`).val($tds.text());
+                $(`#upItemdesc`).val($ts.text());
+                $(`#upUnitPrice`).val($tt.text());
+                $(`#upQty`).val($tf.text());
         });
-    });
-}
 
-function deleteItem(id) {
-    for (let i = 0; i < itemDB.length; i++) {
-        if (itemDB[i].code == id) {
-            itemDB.splice(i, 1);
-            return true
-        }
+        $('#tblItem').on('click', '.delete', function (event) {
+            event.stopPropagation(); // Prevent click event from reaching tr elements
+
+            var $row = $(this).closest("tr"),
+                $tds = $row.find("td:nth-child(1)");
+
+            searchItem($tds.text(), function (exists) {
+                if (exists) {
+                    deleteItem($tds.text());
+                } else {
+                    alert("No such item..please check the code");
+                }
+            });
+        });
+
+        eventsBound = true;
+
     }
-    return false;
 }
 
+setEvent();
+
+//delete item
+function deleteItem(id) {
+    $.ajax({
+        url: "http://localhost:8080/app/items?code=" + id,
+        method: "DELETE",
+        success: function (resp, textStatus, jqxhr) {
+            console.log("success: ", resp);
+            console.log("success: ", textStatus);
+            console.log("success: ", jqxhr);
+            getAllItem();
+        },
+        error: function (jqxhr, textStatus, error) {
+            console.log("error: ", jqxhr);
+            console.log("error: ", textStatus);
+            console.log("error: ", error);
+        }
+    })
+}
+
+
+//search for items
 $('#txtSearchItem').on('keyup',function (){
 
 
