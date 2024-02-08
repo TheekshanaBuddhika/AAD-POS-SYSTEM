@@ -18,13 +18,13 @@ function updateItem(){
             let code = $(`#upItemId`).val();
             let description = $(`#upItemdesc`).val();
             let unitPrice = $(`#upUnitPrice`).val();
-            let qty = $(`#upQty`).val();
+            let qtyOnHand = $(`#upQty`).val();
 
             const itemupdateObj = {
                 code:code,
                 description:description,
                 unitPrice:unitPrice,
-                qty:qty
+                qtyOnHand:qtyOnHand
     };
 
     const jsonitmupdate = JSON.stringify(itemupdateObj);
@@ -75,7 +75,7 @@ function saveItem() {
                 code: code,
                 description: description,
                 unitPrice: unitPrice,
-                qty: qty
+                qtyOnHand: qtyOnHand
             };
 
             const jsonitmObj = JSON.stringify(itemObj);
@@ -189,7 +189,8 @@ function setEvent() {
                 $(`#upQty`).val($tf.text());
         });
 
-        $('#tblItem').on('click', '.delete', function (event) {
+        $('#tblItem').on('click', '.deleteItem', function (event) {
+
             event.stopPropagation(); // Prevent click event from reaching tr elements
 
             var $row = $(this).closest("tr"),
@@ -212,9 +213,9 @@ function setEvent() {
 setEvent();
 
 //delete item
-function deleteItem(id) {
+function deleteItem(code) {
     $.ajax({
-        url: "http://localhost:8080/app/items?code=" + id,
+        url: "http://localhost:8080/app/items?code=" + code,
         method: "DELETE",
         success: function (resp, textStatus, jqxhr) {
             console.log("success: ", resp);
@@ -232,55 +233,46 @@ function deleteItem(id) {
 
 
 //search for items
-$('#txtSearchItem').on('keyup',function (){
+$('#txtSearchItem').on('keyup', function () {
+    let txtitmVal = $('#txtSearchItem').val();
 
-
-
-    let txtVal = $('#txtSearchItem');
-
-    if (txtVal.val() === ''){
+    if (txtitmVal === '') {
         getAllItem();
+        return;
     }
+
     $(`#Item-body`).empty();
+    const itmType = $("#itemSearch").val();
 
-    for (let item of itemDB) {
-        if ($("#itemSearch").val() === "Code") {
-            if (item.code.indexOf($("#txtSearchItem").val()) !== -1) {
+    $.ajax({
+        url: "http://localhost:8080/app/items",
+        method: "GET",
+        success: function (resp) {
+            console.log("Success: ", resp);
 
-                $("#tblItem > tbody").append($(`#Item-body`).append(`<tr>
-                                <td>${item.code}</td>
-                                <td>${item.description}</td>
-                                <td>${item.unitPrice}</td>
-                                <td>${item.qtyOnHand}</td>
-                                <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
-                                        data-bs-target="#update-model">
-                                    Edit
-                                </button>
-                                <button class="btn btn-danger me-3 btn-sm delete">Delete</button></td>
-                   
-                             </tr>`));
+            for (const item of resp) {
+                const itmText = (itmType === "Code") ? item.code : item.description;
+
+                if (itmText.includes($("#txtSearchItem").val())) {
+                    const itmRow = `<tr>
+                        <td>${item.code}</td>
+                        <td>${item.description}</td>
+                        <td>${item.unitPrice}</td>
+                        <td>${item.qtyOnHand}</td>
+                        <td>
+                        <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#update-model">Edit</button>
+                        <button class="btn btn-danger me-3 btn-sm deleteItem">Delete</button></td>
+                    </tr>`;
+
+                    $("#tblItem > tbody").append($(`#Item-body`).append(itmRow));
+                    setEvent();
+                }
             }
-        } else {
-            if (item.description.indexOf($("#txtSearchItem").val()) !== -1) {
-
-                $("#tblItem > tbody").append($(`#Item-body`).append(`<tr>
-                                <td>${item.code}</td>
-                                <td>${item.description}</td>
-                                <td>${item.unitPrice}</td>
-                                <td>${item.qtyOnHand}</td>
-                                <td><button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal"
-                                        data-bs-target="#update-model">
-                                    Edit
-                                </button>
-                                <button class="btn btn-danger me-3 btn-sm deleteItem">Delete</button></td>
-                   
-                             </tr>`));
-            }
+        },
+        error: function (error) {
+            console.log("error: ", error);
         }
-    }
-
-    setEvent();
+    });
 });
-
 
 getAllItem();
