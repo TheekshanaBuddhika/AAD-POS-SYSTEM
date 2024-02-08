@@ -75,8 +75,6 @@ $('#btnPlaceOrder').on('click', function () {
 
     clearAll();
     $('#order-tbl-body').empty();
- //   loadAllOrderDetails();
-
 });
 
 //add order to cart list
